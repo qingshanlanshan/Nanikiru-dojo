@@ -8,7 +8,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "sample": "vite-node scripts/sample.ts"
+    "sample": "vite-node scripts/sample.ts",
+    "deploy": "npm run build && npx wrangler@3 pages deploy dist --project-name heqie-dojo --branch main"
   },
   "devDependencies": {
     "typescript": "^5.9.3",
