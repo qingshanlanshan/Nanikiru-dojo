@@ -19,6 +19,8 @@ export interface GenOptions {
    * 2-shanten, where shape potential dominates), so near-ties are rejected as ambiguous.
    */
   maxCloseness: number;
+  /** Minimum absolute ukeire lead of the best discard (in tiles); a 1-tile edge is noise. */
+  minGap: number;
   /** Max number of equally-correct discards; more than this is too forgiving. */
   maxBest: number;
 }
@@ -31,7 +33,7 @@ export interface Problem {
   closeness: number;
 }
 
-export const DEFAULT_OPTIONS: GenOptions = { shanten: 1, minCloseness: 0.6, maxCloseness: 0.9, maxBest: 2 };
+export const DEFAULT_OPTIONS: GenOptions = { shanten: 1, minCloseness: 0.6, maxCloseness: 0.9, minGap: 2, maxBest: 2 };
 
 const WALL = Array.from({ length: NUM_TILES * 4 }, (_, i) => i >> 2);
 
@@ -76,7 +78,17 @@ export function evaluateCandidate(hand: Counts, opts: GenOptions): Problem | nul
   if (!runnerUp) return null;
   const closeness = runnerUp.ukeire / analysis.bestUkeire;
   if (closeness < opts.minCloseness || closeness > opts.maxCloseness) return null;
+  if (analysis.bestUkeire - runnerUp.ukeire < opts.minGap) return null;
 
+  return { hand, analysis, best, closeness };
+}
+
+/** Build a problem from an arbitrary 14-tile hand (e.g. a shared link), without quality filters. */
+export function problemFromHand(hand: Counts): Problem {
+  const analysis = analyzeDiscards(hand, 'standard');
+  const best = bestDiscards(analysis);
+  const runnerUp = analysis.discards.find((d) => d.shanten === analysis.shanten && d.ukeire < analysis.bestUkeire);
+  const closeness = runnerUp && analysis.bestUkeire ? runnerUp.ukeire / analysis.bestUkeire : 0;
   return { hand, analysis, best, closeness };
 }
 

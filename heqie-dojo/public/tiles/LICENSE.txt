@@ -1,0 +1,2 @@
+Tile art: FluffyStuff/riichi-mahjong-tiles (https://github.com/FluffyStuff/riichi-mahjong-tiles)
+License: CC0 1.0 (public domain). Optimized with svgo and renamed to mpsz codes.
