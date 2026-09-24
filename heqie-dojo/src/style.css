@@ -900,3 +900,17 @@ footer a {
   color: var(--muted);
   font-weight: 500;
 }
+
+.footer-note {
+  margin: 0 0 8px;
+  font-size: 12px;
+}
+.sponsor-note {
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px dashed var(--line);
+  font-size: 13px;
+  text-align: center;
+}

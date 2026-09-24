@@ -52,6 +52,7 @@ export function openSponsor() {
       { class: 'sheet sponsor-sheet' },
       h('h3', {}, '请作者喝杯奶茶'),
       h('p', { class: 'muted small center' }, '何切道场免费、无广告、不收集数据。如果它帮到了你，欢迎随意赞助，金额随心。'),
+      h('p', { class: 'sponsor-note' }, '想说点什么？赞赏任意小金额时写下留言：建议、找到的 bug、想要的新功能都可以，我都会看到。'),
       QRS.length > 1 ? tabs : null,
       QRS.length ? img : null,
       QRS.length ? hint : null,

@@ -42,6 +42,7 @@ export function mountApp(root: HTMLElement) {
       'footer',
       {},
       sponsorEnabled ? h('button', { class: 'footer-sponsor', onclick: openSponsor }, '赞助作者') : null,
+      sponsorEnabled ? h('p', { class: 'footer-note' }, '想给作者留言？赞赏任意小金额时附上留言，我都会看到。') : null,
       h('span', {}, '纯牌效练习 · 不收集任何数据 · 牌图 CC0 '),
       h('a', { href: 'https://github.com/FluffyStuff/riichi-mahjong-tiles', target: '_blank', rel: 'noopener' }, 'FluffyStuff'),
     ),
