@@ -36,6 +36,7 @@ export function createStatsView(): View {
           'tbody',
           {},
           ...levels.map((l) => h('tr', {}, h('td', {}, levelName(l.lv)), h('td', {}, String(l.n)), h('td', {}, pct(l.c, l.n)))),
+          h('tr', {}, h('td', {}, '符数'), h('td', {}, String(s.levels.fu?.n ?? 0)), h('td', {}, pct(s.levels.fu?.c ?? 0, s.levels.fu?.n ?? 0))),
           h('tr', {}, h('td', {}, '今日一题'), h('td', {}, String(dailyDays)), h('td', {}, pct(Object.values(s.daily).filter((d) => d.ok).length, dailyDays))),
         ),
       ),

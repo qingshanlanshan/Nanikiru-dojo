@@ -49,6 +49,15 @@ export function recordPractice(level: number, hand: string, answer: number, best
   save(KEY, s);
 }
 
+/** 符数练习 is tracked under its own key; it has no 错题本 entries. */
+export function recordFu(ok: boolean) {
+  const s = getStats();
+  const lv = (s.levels.fu ??= { n: 0, c: 0 });
+  lv.n++;
+  if (ok) lv.c++;
+  save(KEY, s);
+}
+
 export function recordDaily(date: string, hand: string, answer: number, best: number, ok: boolean) {
   const s = getStats();
   if (s.daily[date]) return;
