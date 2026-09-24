@@ -1,6 +1,6 @@
 import './style.css';
+import { mountApp } from './ui/app';
 import { preloadTiles } from './ui/dom';
-import { mountTrainer } from './ui/trainer';
 
 preloadTiles();
-mountTrainer(document.getElementById('app')!);
+mountApp(document.getElementById('app')!);
