@@ -1,0 +1,9 @@
+// Cloudflare Workers config: a static-only site (no Worker script) served from dist/.
+// Workers Builds runs `npm run build` then `npx wrangler deploy` from this folder.
+{
+  "name": "heqie-dojo",
+  "compatibility_date": "2026-09-24",
+  "assets": {
+    "directory": "./dist",
+  },
+}
