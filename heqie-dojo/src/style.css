@@ -199,6 +199,74 @@ main {
   color: var(--ng);
 }
 
+/* Block view: the hand after the best discard */
+.blocks-card {
+  margin: 0 0 12px;
+  padding: 12px 10px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+}
+.blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 8px;
+}
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.block-tiles {
+  display: flex;
+  gap: 1px;
+}
+.block-label {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.block-head .block-label,
+.block-shuntsu .block-label,
+.block-koutsu .block-label {
+  color: var(--fg);
+}
+.block-cut {
+  margin-left: auto;
+  padding-left: 8px;
+  border-left: 1px dashed var(--line);
+}
+.block-cut .tile {
+  box-shadow: 0 0 0 2px var(--ok), 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+.block-cut .block-label {
+  color: var(--ok);
+  font-weight: 600;
+}
+.tile.is-mine {
+  box-shadow: 0 0 0 2px var(--ng), 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+.mine-note {
+  margin: 10px 2px 0;
+  font-size: 14px;
+  color: var(--ng);
+}
+.reason {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.reason-tag {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--felt);
+  color: var(--felt-fg);
+  font-size: 12px;
+}
+
 .discards {
   width: 100%;
   border-collapse: collapse;

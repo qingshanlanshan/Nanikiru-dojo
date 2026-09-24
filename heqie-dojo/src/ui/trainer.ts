@@ -1,4 +1,5 @@
 import type { DiscardResult } from '../engine/analyze';
+import { explain, type Explanation } from '../engine/explain';
 import { DEFAULT_OPTIONS, generateProblem, problemFromHand, type Problem } from '../engine/generator';
 import { formatHand, parseHand, tileCount, tileName, toTiles } from '../engine/tiles';
 import { h, tileImg } from './dom';
@@ -16,6 +17,8 @@ interface State {
   /** Only show the cursor once the keyboard is used. */
   keyboard: boolean;
   answer: number | null;
+  /** Position of the tapped tile, so only that copy is marked. */
+  answerIdx: number;
   session: { total: number; correct: number; streak: number };
 }
 
@@ -44,14 +47,17 @@ function setHash(p: Problem) {
 export function mountTrainer(root: HTMLElement) {
   const saved = load<Level>('level', 1);
   const level: Level = [1, 2, 3].includes(saved) ? saved : 1;
-  const first = problemFromHash() ?? generate(level);
+  const linked = problemFromHash();
+  const first = linked ?? generate(level);
+  const linkedLevel = linked?.analysis.shanten;
   const state: State = {
-    level,
+    level: linkedLevel === 1 || linkedLevel === 2 || linkedLevel === 3 ? linkedLevel : level,
     problem: first,
     tiles: toTiles(first.hand),
     cursor: 0,
     keyboard: false,
     answer: null,
+    answerIdx: -1,
     session: { total: 0, correct: 0, streak: 0 },
   };
 
@@ -85,9 +91,10 @@ export function mountTrainer(root: HTMLElement) {
     next();
   };
 
-  const discard = (t: number) => {
+  const discard = (t: number, idx: number) => {
     if (state.answer !== null) return;
     state.answer = t;
+    state.answerIdx = idx;
     const ok = state.problem.best.includes(t);
     const s = state.session;
     s.total++;
@@ -101,7 +108,7 @@ export function mountTrainer(root: HTMLElement) {
     if (state.answer === null) {
       if (e.key === 'ArrowLeft') state.cursor = Math.max(0, state.cursor - 1);
       else if (e.key === 'ArrowRight') state.cursor = Math.min(state.tiles.length - 1, state.cursor + 1);
-      else if (e.key === 'Enter' || e.key === ' ') return e.preventDefault(), discard(state.tiles[state.cursor]);
+      else if (e.key === 'Enter' || e.key === ' ') return e.preventDefault(), discard(state.tiles[state.cursor], state.cursor);
       else return;
       e.preventDefault();
       state.keyboard = true;
@@ -135,12 +142,12 @@ export function mountTrainer(root: HTMLElement) {
       ...state.tiles.map((t, i) => {
         const cls = ['tile-btn'];
         if (answer !== null) {
-          if (problem.best.includes(t)) cls.push('is-best');
-          if (t === answer && !problem.best.includes(t)) cls.push('is-wrong');
+          if (problem.best.includes(t) && state.tiles.indexOf(t) === i) cls.push('is-best');
+          if (i === state.answerIdx && !problem.best.includes(t)) cls.push('is-wrong');
         } else if (state.keyboard && i === state.cursor) cls.push('is-cursor');
         const btn = h(
           'button',
-          { class: cls.join(' '), 'aria-label': `打${tileName(t)}`, disabled: answer !== null, onclick: () => discard(t) },
+          { class: cls.join(' '), 'aria-label': `打${tileName(t)}`, disabled: answer !== null, onclick: () => discard(t, i) },
           tileImg(t),
         );
         btn.addEventListener('mouseenter', () => {
@@ -202,6 +209,8 @@ function renderResult(p: Problem, answer: number, next: () => void): HTMLElement
   else if (mine.shanten > analysis.shanten) verdict = `打${tileName(answer)} 会退向听`;
   else verdict = `打${tileName(answer)} ${mine.ukeire}枚，最优 打${tileName(top.discard)} ${top.ukeire}枚（少 ${top.ukeire - mine.ukeire} 枚）`;
 
+  const ex = explain(p, answer);
+
   const keep = analysis.discards.filter((d) => d.shanten === analysis.shanten);
   const back = analysis.discards.filter((d) => d.shanten > analysis.shanten);
 
@@ -222,6 +231,8 @@ function renderResult(p: Problem, answer: number, next: () => void): HTMLElement
     'section',
     { class: `result ${ok ? 'ok' : 'ng'}`, 'aria-live': 'polite' },
     h('p', { class: 'verdict' }, verdict),
+    ok ? null : renderBlocks(ex),
+    h('p', { class: 'reason' }, h('span', { class: 'reason-tag' }, '思路'), ex.reason),
     h(
       'table',
       { class: 'discards' },
@@ -237,5 +248,34 @@ function renderResult(p: Problem, answer: number, next: () => void): HTMLElement
         )
       : null,
     h('button', { class: 'next', onclick: next }, '下一题 →'),
+  );
+}
+
+/** The hand after the best discard, split into blocks, with the cut tile and the player's tile marked. */
+function renderBlocks(ex: Explanation): HTMLElement {
+  return h(
+    'div',
+    { class: 'blocks-card' },
+    h(
+      'div',
+      { class: 'blocks' },
+      ...ex.blocks.map((b, bi) =>
+        h(
+          'div',
+          { class: `block block-${b.kind}` },
+          h(
+            'div',
+            { class: 'block-tiles' },
+            ...b.tiles.map((t, ti) => {
+              const el = tileImg(t, 'tile tile-sm');
+              if (bi === ex.mineAt[0] && ti === ex.mineAt[1]) el.classList.add('is-mine');
+              return el;
+            }),
+          ),
+          h('div', { class: 'block-label' }, b.label),
+        ),
+      ),
+    ),
+    ex.mineNote ? h('p', { class: 'mine-note' }, ex.mineNote) : null,
   );
 }
