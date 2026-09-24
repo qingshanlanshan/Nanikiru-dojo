@@ -49,10 +49,10 @@ export function recordPractice(level: number, hand: string, answer: number, best
   save(KEY, s);
 }
 
-/** 符数练习 is tracked under its own key; it has no 错题本 entries. */
-export function recordFu(ok: boolean) {
+/** 算分 drills ('fu' = 符数, 'pts' = 点数) are tracked under their own keys, without 错题本 entries. */
+export function recordDrill(key: 'fu' | 'pts', ok: boolean) {
   const s = getStats();
-  const lv = (s.levels.fu ??= { n: 0, c: 0 });
+  const lv = (s.levels[key] ??= { n: 0, c: 0 });
   lv.n++;
   if (ok) lv.c++;
   save(KEY, s);

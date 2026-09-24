@@ -816,3 +816,87 @@ footer a {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
+
+/* 点数练习 */
+.pts-card {
+  text-align: center;
+  padding: 22px 16px;
+}
+.pts-hanfu {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.pts-who {
+  margin-top: 4px;
+  font-size: 16px;
+  opacity: 0.9;
+}
+.pts-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 14px 16px 0;
+}
+.pts-field {
+  flex: 1;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.pts-input {
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.pts-form .btn {
+  flex: none;
+  min-width: 88px;
+}
+.pts-steps {
+  margin: 0 0 14px;
+  padding-left: 22px;
+  font-size: 14px;
+  line-height: 1.9;
+  font-variant-numeric: tabular-nums;
+}
+.pts-more {
+  padding: 16px;
+}
+.cheat-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 640px) {
+  .cheat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.cheat-grid h4 {
+  margin: 4px 0;
+  font-size: 13px;
+  color: var(--fg);
+}
+.cheat {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+.cheat th,
+.cheat td {
+  padding: 4px 3px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  white-space: nowrap;
+}
+.cheat thead th,
+.cheat tbody th {
+  color: var(--muted);
+  font-weight: 500;
+}

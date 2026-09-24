@@ -2,7 +2,7 @@ import { FU_CHOICES, generateFuProblem, windName, type FuProblem, type MeldKind 
 import { tileName, toTiles } from '../engine/tiles';
 import { h, tileImg } from './dom';
 import type { View } from './practice';
-import { recordFu } from './stats';
+import { recordDrill } from './stats';
 
 const MELD_LABEL: Record<MeldKind, string> = { chi: '吃', pon: '碰', minkan: '明杠', ankan: '暗杠' };
 
@@ -25,7 +25,7 @@ export function createFuView(): View {
     session.total++;
     if (ok) session.correct++, session.streak++;
     else session.streak = 0;
-    recordFu(ok);
+    recordDrill('fu', ok);
     document.dispatchEvent(new Event('heqie:answered'));
     render();
   };
