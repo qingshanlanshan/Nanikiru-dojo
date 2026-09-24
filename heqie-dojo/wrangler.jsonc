@@ -8,6 +8,8 @@
   },
   // Cloudflare creates the DNS record and certificate for the custom domain.
   "routes": [{ "pattern": "heqie.qshlab.com", "custom_domain": true }],
-  // Keep the original *.workers.dev address working for links already shared.
-  "workers_dev": true,
+  // One canonical address: progress (localStorage) and PWA installs are per-origin,
+  // so the *.workers.dev address is off. Preview URLs for branches stay on.
+  "workers_dev": false,
+  "preview_urls": true,
 }
