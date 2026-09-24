@@ -6,4 +6,8 @@
   "assets": {
     "directory": "./dist",
   },
+  // Cloudflare creates the DNS record and certificate for the custom domain.
+  "routes": [{ "pattern": "heqie.qshlab.com", "custom_domain": true }],
+  // Keep the original *.workers.dev address working for links already shared.
+  "workers_dev": true,
 }
