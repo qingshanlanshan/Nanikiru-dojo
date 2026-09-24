@@ -84,6 +84,7 @@ export function createPractice(): View {
     if (ok) session.correct++, session.streak++;
     else session.streak = 0;
     recordPractice(problem.analysis.shanten, formatHand(problem.hand), t, problem.best[0], ok);
+    document.dispatchEvent(new Event('heqie:answered'));
     render();
   };
 

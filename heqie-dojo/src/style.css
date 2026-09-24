@@ -63,7 +63,7 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 12px 16px 8px;
+  padding: calc(12px + env(safe-area-inset-top)) 16px 8px;
 }
 .brand {
   color: inherit;
@@ -522,4 +522,54 @@ footer {
 }
 footer a {
   color: inherit;
+}
+
+/* Install tip */
+.install-tip {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 10px 8px 10px 10px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+.install-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+}
+.install-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: var(--muted);
+}
+.install-text b {
+  color: var(--fg);
+  font-size: 14px;
+}
+.install-btn {
+  flex: none;
+  min-height: 36px;
+  padding: 6px 14px;
+}
+.install-close {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 22px;
+  cursor: pointer;
 }

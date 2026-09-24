@@ -39,6 +39,7 @@ export function createDaily(): View {
     hs.answer = t;
     hs.answerIdx = idx;
     recordDaily(date, formatHand(problem.hand), t, problem.best[0], problem.best.includes(t));
+    document.dispatchEvent(new Event('heqie:answered'));
     render();
   };
 
