@@ -71,6 +71,11 @@ function mergeLoose(blocks: Block[]): ViewBlock[] {
   return view.sort((a, b) => a.tiles[0] - b.tiles[0]);
 }
 
+/** Block view of any hand (e.g. a 13-tile hand in the calculator), loose tiles folded in. */
+export function blockView(hand: Counts): ViewBlock[] {
+  return mergeLoose(decompose(hand).blocks);
+}
+
 /** Prefer the weakest role when a tile type appears in several blocks. */
 const ROLE_ORDER: ViewKind[] = ['single', 'complex', 'kanchan', 'penchan', 'pair', 'ryanmen', 'head', 'koutsu', 'shuntsu'];
 

@@ -1,5 +1,5 @@
 import type { DiscardResult } from '../engine/analyze';
-import { explain, type Explanation } from '../engine/explain';
+import { explain, type ViewBlock } from '../engine/explain';
 import type { Problem } from '../engine/generator';
 import { tileName } from '../engine/tiles';
 import { h, tileImg } from './dom';
@@ -51,9 +51,22 @@ export function renderResult(p: Problem, answer: number, ...actions: HTMLElement
   else verdict = `打${tileName(answer)} ${mine.ukeire}枚，最优 打${tileName(top.discard)} ${top.ukeire}枚（少 ${top.ukeire - mine.ukeire} 枚）`;
 
   const ex = explain(p, answer);
+  return h(
+    'section',
+    { class: `result ${ok ? 'ok' : 'ng'}`, 'aria-live': 'polite' },
+    h('p', { class: 'verdict' }, verdict),
+    ok ? null : renderBlocks(ex.blocks, ex.mineAt, ex.mineNote),
+    h('p', { class: 'reason' }, h('span', { class: 'reason-tag' }, '思路'), ex.reason),
+    h('div', { class: 'actions' }, ...actions),
+    renderDiscardTable(p, answer),
+  );
+}
+
+/** Every discard that keeps the shanten, best first; the rest folded away. */
+export function renderDiscardTable(p: Problem, answer: number | null): HTMLElement {
+  const { analysis, best } = p;
   const keep = analysis.discards.filter((d) => d.shanten === analysis.shanten);
   const back = analysis.discards.filter((d) => d.shanten > analysis.shanten);
-
   const row = (d: DiscardResult) => {
     const cls = ['row'];
     if (best.includes(d.discard)) cls.push('is-best');
@@ -66,14 +79,9 @@ export function renderResult(p: Problem, answer: number, ...actions: HTMLElement
       h('td', { class: 'c-waits' }, ...d.waits.map((w) => tileImg(w, 'tile tile-xs'))),
     );
   };
-
   return h(
-    'section',
-    { class: `result ${ok ? 'ok' : 'ng'}`, 'aria-live': 'polite' },
-    h('p', { class: 'verdict' }, verdict),
-    ok ? null : renderBlocks(ex),
-    h('p', { class: 'reason' }, h('span', { class: 'reason-tag' }, '思路'), ex.reason),
-    h('div', { class: 'actions' }, ...actions),
+    'div',
+    {},
     h(
       'table',
       { class: 'discards' },
@@ -92,14 +100,14 @@ export function renderResult(p: Problem, answer: number, ...actions: HTMLElement
 }
 
 /** The hand after the best discard, split into blocks, with the cut tile and the player's tile marked. */
-function renderBlocks(ex: Explanation): HTMLElement {
+export function renderBlocks(blocks: ViewBlock[], mark: [number, number] | null = null, note: string | null = null): HTMLElement {
   return h(
     'div',
     { class: 'blocks-card' },
     h(
       'div',
       { class: 'blocks' },
-      ...ex.blocks.map((b, bi) =>
+      ...blocks.map((b, bi) =>
         h(
           'div',
           { class: `block block-${b.kind}` },
@@ -108,7 +116,7 @@ function renderBlocks(ex: Explanation): HTMLElement {
             { class: 'block-tiles' },
             ...b.tiles.map((t, ti) => {
               const el = tileImg(t, 'tile tile-sm');
-              if (bi === ex.mineAt[0] && ti === ex.mineAt[1]) el.classList.add('is-mine');
+              if (mark && bi === mark[0] && ti === mark[1]) el.classList.add('is-mine');
               return el;
             }),
           ),
@@ -116,6 +124,6 @@ function renderBlocks(ex: Explanation): HTMLElement {
         ),
       ),
     ),
-    ex.mineNote ? h('p', { class: 'mine-note' }, ex.mineNote) : null,
+    note ? h('p', { class: 'mine-note' }, note) : null,
   );
 }

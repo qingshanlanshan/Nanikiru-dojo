@@ -1,19 +1,22 @@
+import { createCalc } from './calc';
 import { createDaily } from './daily';
 import { h } from './dom';
 import { createPractice, type View } from './practice';
 import { createStatsView } from './statsView';
 
-type Route = 'practice' | 'daily' | 'stats';
+type Route = 'practice' | 'daily' | 'calc' | 'stats';
 
 const NAV: [Route, string, string][] = [
   ['practice', '练习', '#'],
   ['daily', '今日一题', '#daily'],
+  ['calc', '计算', '#calc'],
   ['stats', '统计', '#stats'],
 ];
 
 function currentRoute(): Route {
   if (location.hash === '#daily') return 'daily';
   if (location.hash === '#stats') return 'stats';
+  if (location.hash.startsWith('#calc')) return 'calc';
   return 'practice';
 }
 
@@ -21,6 +24,7 @@ export function mountApp(root: HTMLElement) {
   const views: Record<Route, View> = {
     practice: createPractice(),
     daily: createDaily(),
+    calc: createCalc(),
     stats: createStatsView(),
   };
   const links = NAV.map(([route, label, href]) => h('a', { class: 'nav-link', href, 'data-route': route }, label));

@@ -35,6 +35,37 @@ describe('explain', () => {
     expect(explain(p, 3).reason).toContain('拆最弱的边张 12万');
   });
 
+  it('never throws on arbitrary hands (calculator input: quads, one suit, honors)', () => {
+    const rng = mulberry32(21);
+    const hands = ['11223344556677m', '11112345678999m', '11122233344455m', '1111m2222p3333s44z', '1234567z1234567z'.slice(0, 16)];
+    for (let i = 0; i < 400; i++) {
+      // Biased draws: sometimes a single suit, to hit long suit decompositions.
+      const c = emptyCounts();
+      const suit = rng() < 0.3 ? Math.floor(rng() * 3) : -1;
+      for (let n = 0; n < 14; ) {
+        const t = suit >= 0 ? suit * 9 + Math.floor(rng() * 9) : Math.floor(rng() * 34);
+        if (c[t] < 4) c[t]++, n++;
+      }
+      hands.push(formatHand(c));
+    }
+    for (const s of hands) {
+      let hand;
+      try {
+        hand = parseHand(s);
+      } catch {
+        continue;
+      }
+      if (tileCount(hand) !== 14) continue;
+      const p = problemFromHand(hand);
+      if (p.analysis.shanten < 0) continue;
+      for (const r of p.analysis.discards) {
+        const e = explain(p, r.discard);
+        expect(e.reason.length, s).toBeGreaterThan(0);
+        expect(e.blocks.reduce((n, b) => n + b.tiles.length, 0), s).toBe(14);
+      }
+    }
+  });
+
   it('is well-formed for any wrong answer', () => {
     const rng = mulberry32(9);
     for (let i = 0; i < 150; i++) {
