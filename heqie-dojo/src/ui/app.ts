@@ -2,6 +2,7 @@ import { createCalc } from './calc';
 import { createDaily } from './daily';
 import { h } from './dom';
 import { createPractice, type View } from './practice';
+import { openSponsor, sponsorEnabled } from './sponsor';
 import { createStatsView } from './statsView';
 
 type Route = 'practice' | 'daily' | 'calc' | 'stats';
@@ -36,6 +37,7 @@ export function mountApp(root: HTMLElement) {
     h(
       'footer',
       {},
+      sponsorEnabled ? h('button', { class: 'footer-sponsor', onclick: openSponsor }, '赞助作者') : null,
       h('span', {}, '纯牌效练习 · 不收集任何数据 · 牌图 CC0 '),
       h('a', { href: 'https://github.com/FluffyStuff/riichi-mahjong-tiles', target: '_blank', rel: 'noopener' }, 'FluffyStuff'),
     ),

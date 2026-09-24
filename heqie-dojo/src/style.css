@@ -691,3 +691,48 @@ footer a {
   font-size: 12px;
   color: var(--muted);
 }
+
+/* Sponsor */
+.footer-sponsor {
+  display: block;
+  margin: 0 auto 8px;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--fg);
+  font-size: 13px;
+  cursor: pointer;
+}
+.sponsor-sheet h3 {
+  margin: 4px 0 6px;
+  text-align: center;
+  font-size: 17px;
+}
+.sponsor-tabs {
+  padding: 4px 0 10px;
+}
+.sponsor-qr {
+  display: block;
+  width: min(240px, 70vw);
+  height: auto;
+  margin: 0 auto;
+  border-radius: 8px;
+  background: #fff;
+}
+.sponsor-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  font-size: 13px;
+}
+.sponsor-card .btn {
+  flex: none;
+  min-height: 36px;
+  padding: 6px 14px;
+}

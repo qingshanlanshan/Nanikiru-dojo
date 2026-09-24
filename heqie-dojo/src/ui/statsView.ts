@@ -3,6 +3,7 @@ import { todayKey } from './daily';
 import { h, tileImg } from './dom';
 import type { View } from './practice';
 import { levelName } from './problemView';
+import { openSponsor, sponsorEnabled } from './sponsor';
 import { clearStats, dailyStreak, getStats } from './stats';
 
 export function createStatsView(): View {
@@ -61,6 +62,14 @@ export function createStatsView(): View {
             }).filter(Boolean),
           )
         : h('p', { class: 'hint' }, '还没有错题。答错的题会自动收进这里。'),
+      sponsorEnabled && n >= 20
+        ? h(
+            'div',
+            { class: 'sponsor-card' },
+            h('span', {}, `已经练了 ${n} 题。觉得有用的话，可以请作者喝杯奶茶。`),
+            h('button', { class: 'btn', onclick: openSponsor }, '赞助'),
+          )
+        : '',
       h('p', { class: 'hint small' }, '记录只保存在本机浏览器，不上传任何数据。'),
       h('button', {
         class: 'btn btn-quiet',
