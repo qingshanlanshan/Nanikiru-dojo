@@ -1,7 +1,6 @@
 import { h } from './dom';
 
 // Free feedback: posted to the shared endpoint on wick.qshlab.com, which emails it to the author.
-// Nothing is stored anywhere.
 const ENDPOINT = 'https://wick.qshlab.com/api/feedback';
 
 export function openFeedback() {
@@ -54,7 +53,7 @@ export function openFeedback() {
       'div',
       { class: 'sheet feedback-sheet' },
       h('h3', {}, '意见反馈'),
-      h('p', { class: 'muted small center' }, '免费留言，直接以邮件发给作者，不会被保存。'),
+      h('p', { class: 'muted small center' }, '免费留言，会以邮件发给作者。'),
       message,
       contact,
       trap,
