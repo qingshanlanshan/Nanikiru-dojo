@@ -16,7 +16,7 @@ const QRS: SponsorQr[] = [
   // { label: '支付宝', app: '支付宝', src: '/sponsor/alipay.png' },
 ];
 
-/** e.g. { label: '去爱发电赞助', href: 'https://afdian.com/a/xxx' } */
+/** International tips (card / PayPal), e.g. { label: 'Ko-fi（银行卡 / PayPal）', href: 'https://ko-fi.com/xxx' } */
 const LINK: { label: string; href: string } | null = null;
 
 export const sponsorEnabled = QRS.length > 0 || LINK !== null;
@@ -52,7 +52,7 @@ export function openSponsor() {
       { class: 'sheet sponsor-sheet' },
       h('h3', {}, '请作者喝杯奶茶'),
       h('p', { class: 'muted small center' }, '何切道场免费、无广告、不收集数据。如果它帮到了你，欢迎随意赞助，金额随心。'),
-      h('p', { class: 'sponsor-note' }, '想说点什么？赞赏任意小金额时写下留言：建议、找到的 bug、想要的新功能都可以，我都会看到。'),
+      h('p', { class: 'muted small center' }, '意见反馈永远免费，请用页面底部的「意见反馈」。'),
       QRS.length > 1 ? tabs : null,
       QRS.length ? img : null,
       QRS.length ? hint : null,
