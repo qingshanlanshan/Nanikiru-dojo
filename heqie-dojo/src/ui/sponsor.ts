@@ -17,7 +17,7 @@ const QRS: SponsorQr[] = [
 ];
 
 /** International tips (card / PayPal), e.g. { label: 'Ko-fi（银行卡 / PayPal）', href: 'https://ko-fi.com/xxx' } */
-const LINK: { label: string; href: string } | null = null;
+const LINK: { label: string; href: string } | null = { label: 'Ko-fi（银行卡 / PayPal）', href: 'https://ko-fi.com/qingshanlanshan' };
 
 export const sponsorEnabled = QRS.length > 0 || LINK !== null;
 
