@@ -58,6 +58,10 @@ Node version: see `heqie-dojo/.node-version`.
 反馈表单的消息由 [WickReader](https://github.com/qingshanlanshan/WickReader) 网站的 Worker 转发邮件，
 本站不保存。Feedback messages are emailed on by the Worker of the WickReader site; this site keeps nothing.
 
+## 许可 License
+
+MIT（见 [LICENSE](LICENSE)）。The code is MIT-licensed; see [LICENSE](LICENSE).
+
 ---
 
 qshlab 的其他作品 · More from qshlab: <https://qshlab.com>
